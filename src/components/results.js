@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-
+import { useParams } from 'react-router-dom';
 
  function Results() {
 
     
-    const request = '/soccer/trial/v4/en/seasons/sr:season:77453/schedules.json?api_key=arreu66uqekjhuppj8jv3339';
+    
 
     const [data, setData] = useState([]);
+
+    const params = useParams();
+    //console.log(params.id)
+
+    const request = `/soccer/trial/v4/en/seasons/${params.season}/schedules.json?api_key=arreu66uqekjhuppj8jv3339`;
 
     const fetchResults = async () => {
 	fetch(request).then((response) => {
@@ -67,36 +72,43 @@ import { Table } from 'react-bootstrap';
                                     <td className='bg-success'>
                                         {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                     </td>;
+
                                 teamAway = 
                                     <td className='bg-danger'>
                                         {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                     </td>;
                         }
+
                         else if(homeScore < awayScore){ //AWAY WIN
                                 teamHome = 
                                 <td className='bg-danger'>
                                     {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                 </td>;
+
                                 teamAway = 
                                 <td className='bg-success'>
                                     {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                 </td>;
                         }
+
                         else if(item.sport_event_status.status === 'postponed'){ //match postponed
                             teamHome = 
                                     <td className=''>
                                         {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                     </td>;
+
                                 teamAway = 
                                     <td className=''>
                                         {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                     </td>;
                         }
+
                         else if (homeScore === awayScore){ //DRAW
                                 teamHome = 
                                     <td className='bg-warning'>
                                         {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                     </td>;
+                                    
                                 teamAway = 
                                     <td className='bg-warning'>
                                         {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
@@ -106,7 +118,7 @@ import { Table } from 'react-bootstrap';
                     return (
                             
                         
-
+                        
                         <tr className=''>
                             <td className=''>
                             {matchDate}
