@@ -10,9 +10,8 @@ import { useParams } from 'react-router-dom';
     const [data, setData] = useState([]);
 
     const params = useParams();
-    //console.log(params.id)
-
-    const request = `/soccer/trial/v4/en/seasons/${params.season}/schedules.json?api_key=arreu66uqekjhuppj8jv3339`;
+    
+    const request = `/soccer/trial/v4/en/seasons/${params.season}/schedules.json?api_key=jzd9h67wau4peh3zduceumac`;
 
     const fetchResults = async () => {
 	fetch(request).then((response) => {
@@ -36,13 +35,17 @@ import { useParams } from 'react-router-dom';
     
 
     return (
-        
-        <Table className='text-center' variant='dark' bordered hover>
-            <thead className="">
+        <Table id='tabledata' className='text-center' variant='dark' hover>
+            <thead>
                 <tr>
-                    <th className=''>Start date</th>
-                    <th>Home team</th>
-                    <th>Away team</th>
+                    <th id='tbody-title' colSpan={6} className='h2'>
+                        {data[0] ? data[0].sport_event.sport_event_context.season.name : ''}
+                    </th>
+                </tr>
+                <tr id='thead-columns-tr'>
+                    <th>Start date</th>
+                    <th id='thead-hometeam'>Home team</th>
+                    <th id='thead-awayteam'>Away team</th>
                     <th>Venue</th>
                     <th>Match result</th>
                     <th>Half time score</th>
@@ -69,48 +72,48 @@ import { useParams } from 'react-router-dom';
                         let teamAway;
                         if (homeScore > awayScore){ //HOME WIN
                                 teamHome = 
-                                    <td className='bg-success'>
+                                    <td id='winner-td'>
                                         {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                     </td>;
 
                                 teamAway = 
-                                    <td className='bg-danger'>
+                                    <td id='loser-td'>
                                         {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                     </td>;
                         }
 
                         else if(homeScore < awayScore){ //AWAY WIN
                                 teamHome = 
-                                <td className='bg-danger'>
+                                <td id='loser-td'>
                                     {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                 </td>;
 
                                 teamAway = 
-                                <td className='bg-success'>
+                                <td id='winner-td'>
                                     {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                 </td>;
                         }
 
                         else if(item.sport_event_status.status === 'postponed'){ //match postponed
                             teamHome = 
-                                    <td className=''>
+                                    <td id='postponed-left-td'>
                                         {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                     </td>;
 
                                 teamAway = 
-                                    <td className=''>
+                                    <td id='postponed-right-td'>
                                         {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                     </td>;
                         }
 
                         else if (homeScore === awayScore){ //DRAW
                                 teamHome = 
-                                    <td className='bg-warning'>
+                                    <td id='draw-left-td'>
                                         {item.sport_event ? item.sport_event.competitors[0].name: ' - '}
                                     </td>;
                                     
                                 teamAway = 
-                                    <td className='bg-warning'>
+                                    <td id='draw-right-td'>
                                         {item.sport_event ? item.sport_event.competitors[1].name: ' - '}
                                     </td>;
                     }
@@ -119,8 +122,10 @@ import { useParams } from 'react-router-dom';
                             
                         
                         
-                        <tr className=''>
-                            <td className=''>
+                        <tr id='table-match-info' onClick={()=>window.location.href = `/match/${item.sport_event.id}`}>
+                            
+
+                            <td id='table-matchdate'>
                             {matchDate}
                             </td>
                                 
@@ -129,15 +134,15 @@ import { useParams } from 'react-router-dom';
                             {teamAway}
                             
 
-                            <td className=''>
+                            <td id='table-venue'>
                                 {venue}
                             </td>
 
-                            <td className=''>
+                            <td id='table-result'>
                             {matchResult}
                             </td>
 
-                            <td className=''>
+                            <td id='table-halftime'>
                             {matchHalfTimeScore}
                             </td>
 
